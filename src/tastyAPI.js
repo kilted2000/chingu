@@ -4,12 +4,7 @@
 // 3. create a component that will display the data
 // 4. export the component
 // 5. import the component into App.js
-// 6. use the component in App.js
-// 7. test to see if it works
-// 8. if it works, style it
-// 9. if it doesn't work, debug it
-// 10. if you can't debug it, ask for help
-// 11. if you can't get help, move on to the next step
+
 
 import React from "react";
 import axios from "axios";
@@ -34,3 +29,20 @@ const options = {
   }).catch(function (error) {
   console.error(error);
   });
+
+//   const url = 'https://tasty.p.rapidapi.com/recipes/auto-complete?prefix=chicken%20soup';
+// const options = {
+// 	method: 'GET',
+// 	headers: {
+// 		'X-RapidAPI-Key': '109ea4696fmsh3a46f9a36cab73bp1be7bejsn6fa98eee3d63',
+// 		'X-RapidAPI-Host': 'tasty.p.rapidapi.com'
+// 	}
+// };
+
+// try {
+// 	const response = await fetch(url, options);
+// 	const result = await response.text();
+// 	console.log(result);
+// } catch (error) {
+// 	console.error(error);
+// }

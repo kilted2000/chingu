@@ -1,18 +1,14 @@
-import React from "react";
+import { useState } from "react";
 
-export default function Recipe(){
- 
+export default function Recipe({ingredients}){
+ const [recipe, setRecipe] = useState('');
   
     return(
 <>
 <div>
     <input type="text" />
     <ol>
-        <li>cheese</li>
-        <li>beef</li>
-        <li>taters</li>
-        <li>butter</li>
-        <li>salami</li>
+        <li>{ingredients}</li>
     </ol>
 </div>
 </>
