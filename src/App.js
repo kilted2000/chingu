@@ -1,19 +1,46 @@
 import {useState, useEffect} from 'react';
-import ReactDom from 'react-dom';
 import './App.css';
+import axios from 'axios';
 import Recipe from './components/Recipe';
 
-function App() {
+ function App() {
   const [recipes, setRecipes] = useState([]);
+  const [userSearch, setUserSearch] = useState('');
 
-  const fetchRecipes = () => {
-  fetch(`https://tasty.p.rapidapi.com/recipes/auto-complete?prefix=chicken%20soup`)
-  .then((response) => response.json())
-  .then((data) => setRecipes(data))
-  }
+
   useEffect(() => {
-    fetchRecipes();
-  }, [])
+  const fetchRecipes = async () => {
+    const options = {
+      method: 'GET',
+      url: 'https://tasty.p.rapidapi.com/recipes/auto-complete',
+      params: {
+        prefix: userSearch, 
+      },
+      headers: {
+        'X-RapidAPI-Key': process.env.X_RAPID_API_KEY,
+        'X-RapidAPI-Host': 'tasty.p.rapidapi.com',
+      },
+    };
+
+    try {
+      const response = await axios.request(options);
+      setRecipes(response.data.results);
+    } catch (error) {
+      if (error.response) {
+        console.error(`Request failed with status code ${error.response.status}`);
+      } else if (error.request) {
+        console.error('No response received');
+      } else {
+        console.error('An error occurred', error.message);
+    }
+  }
+
+  };
+
+  fetchRecipes();
+},[userSearch]);
+
+
 
   return (
     <div className="App">
@@ -21,49 +48,24 @@ function App() {
       
        
       <h2>Recipes</h2>
-       
-          <Recipe
-            // key={recipes.id} 
-            // id={recipes.id}
-            // title={recipes.title} 
-            //body={results.body} 
-           
+      <div>
+          <input
+            type="text"
+            placeholder="Search for recipes..."
+            value={userSearch}
+            onChange={(e) => setUserSearch(e.target.value)}
           />
+          <button>Search</button>
+        </div>
+      {recipes.map((recipe) => (
+          <Recipe key={recipe.id} title={recipe.name} />
+        ))}
       
       
       </header>
     </div>
   );
-//   const fetchRecipes = async () => {  
-//     const url = `https://tasty.p.rapidapi.com/recipes/auto-complete?prefix=${recipes}`;
-// const options = {
-// 	method: 'GET',
-// 	headers: {
-// 		'X-RapidAPI-Key': '109ea4696fmsh3a46f9a36cab73bp1be7bejsn6fa98eee3d63',
-// 		'X-RapidAPI-Host': 'tasty.p.rapidapi.com'
-// 	}
-// };
 
-// try {
-// 	const response = await fetch(url, options);
-// 	const result = await response.text();
-// 	console.log(result);
-// } catch (error) {
-// 	console.error(error);
-// }
-    // const response = await fetch('https://tasty.p.rapidapi.com/recipes/auto-complete?prefix=chicken%20soup', {
-    //   "method": "GET",
-    //   "headers": {
-    //     "x-rapidapi-key": 'process.env.X_RAPID_API_KEY',
-    //     "x-rapidapi-host": "tasty.p.rapidapi.com"
-    //   }
-    // })
-    // const data = await response.json();
-    // setRecipes(data.results);
-  }
+      }
 
-
-  
-//}
-
-export default App;
+      export default App;
