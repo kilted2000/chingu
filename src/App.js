@@ -89,17 +89,18 @@
 //     }
 //       export default App;
 
-      import { useState, useEffect } from 'react';
+//importing needed components
+      import { useState, useEffect, useCallback } from 'react';
       import './App.css';
       import axios from 'axios';
       import Recipe from './components/Recipe';
-      
+      //the app function that is the page
       function App() {
         const [recipes, setRecipes] = useState([]);
         const [userSearch, setUserSearch] = useState('');
         const [loading, setLoading] = useState(false);
       
-        const fetchRecipes = async () => {
+        const fetchRecipes = useCallback( async () => {
           const options = {
             method: 'GET',
             url: 'https://tasty.p.rapidapi.com/recipes/auto-complete',
@@ -129,18 +130,42 @@
               console.error('An error occurred', error.message);
             }
           }
-        };
+        }, [userSearch]);
+
+        // useEffect(() => {
+        //   const fetchRecipesWrapper = () => {
+        //     fetchRecipes();
+        //   };
       
+        //   if (!userSearch) return;
+        //   if (loading) return;
+        //   setLoading(true);
+      
+        //   setTimeout(() => {
+        //     fetchRecipesWrapper();
+        //     setLoading(false);
+        //   }, 3000);
+        // }, [userSearch, loading, fetchRecipes]);
         useEffect(() => {
+        
           if (!userSearch) return;
           if (loading) return;
           setLoading(true);
       
-          setTimeout(() => {
+          const delay = setTimeout(() => {
             fetchRecipes();
             setLoading(false);
           }, 3000);
-        }, [userSearch, fetchRecipes]);
+        
+          return () => clearTimeout(delay);
+        }, [userSearch, loading, fetchRecipes]);
+        //   setTimeout(() => {
+        //     fetchRecipes();
+        //     setLoading(false);
+        //   }, 3000);
+          
+        // }, [userSearch, loading, fetchRecipes]);
+     
       
         const handleSearch = () => {
           setUserSearch(userSearch);
@@ -155,7 +180,7 @@
                   type="text"
                   placeholder="Search for recipes..."
                   value={userSearch}
-                  onChange={(e) => setUserSearch(e.target.value)}
+               
                 />
                 <button onClick={handleSearch}>Search</button>
               </div>
