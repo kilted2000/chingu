@@ -94,22 +94,33 @@
       import './App.css';
       import axios from 'axios';
       import Recipe from './components/Recipe';
-      //the app function that is the page
+      //the app function that is the page itself
       function App() {
-        const [recipes, setRecipes] = useState([]);
+        //montiors state in the app 
+        //recipes state may not be needed
+        //const [recipes, setRecipes] = useState([]);
+        //state in search bar
         const [userSearch, setUserSearch] = useState('');
+        //monitors is page is loading or not
         const [loading, setLoading] = useState(false);
       
+        //gets recipes from the api
+        //useCallback to stop constant rerendering
         const fetchRecipes = useCallback( async () => {
+          //code snippet from api docs
           const options = {
+            //get request
             method: 'GET',
+            //api endpoint
             url: 'https://tasty.p.rapidapi.com/recipes/auto-complete',
             params: {
+              //what is being searched for
               prefix: userSearch,
             },
             headers: {
+              //api key and api host stored in env file
               'X-RapidAPI-Key': process.env.X_RapidAPI_Key,
-              'X-RapidAPI-Host': 'tasty.p.rapidapi.com',
+              'X-RapidAPI-Host': process.env.X-RapidAPI-Host,
             },
           };
       
