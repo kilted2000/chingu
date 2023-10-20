@@ -98,7 +98,7 @@
       function App() {
         //montiors state in the app 
         //recipes state may not be needed
-        //const [recipes, setRecipes] = useState([]);
+        const [recipes, setRecipes] = useState([]);
         //state in search bar
         const [userSearch, setUserSearch] = useState('');
         //monitors is page is loading or not
@@ -112,7 +112,7 @@
             //get request
             method: 'GET',
             //api endpoint
-            url: 'https://tasty.p.rapidapi.com/recipes/auto-complete',
+            url: 'https://tasty.p.rapidapi.com/recipes/auto-complete?prefix=',
             params: {
               //what is being searched for
               prefix: userSearch,
@@ -120,7 +120,7 @@
             headers: {
               //api key and api host stored in env file
               'X-RapidAPI-Key': process.env.X_RapidAPI_Key,
-              'X-RapidAPI-Host': process.env.X-RapidAPI-Host,
+              'X-RapidAPI-Host': 'tasty.p.rapidapi.com',
             },
           };
       
@@ -128,6 +128,7 @@
             const response = await axios.request(options);
             setRecipes(response.data.results);
             console.log(response.data.results);
+            //error handling
           } catch (error) {
             if (error.response) {
               if (error.response.status === 429) {
@@ -140,7 +141,7 @@
             } else {
               console.error('An error occurred', error.message);
             }
-          }
+          }//rerenders only when userSearch changes
         }, [userSearch]);
 
         // useEffect(() => {
