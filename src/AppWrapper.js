@@ -242,7 +242,7 @@ const retrieveRecipes = async (searchTerm) => {
   );
   return filteredRecipes.slice(0, 20);
 };
-
+//check rerendering and api key
 const App = () => {
   //const [userSearch] = React.useState("chicken");
   const { data: recipes, error, isLoading } = useQuery(["recipes", 'chicken'], () =>
